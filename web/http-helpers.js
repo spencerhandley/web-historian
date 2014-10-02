@@ -10,9 +10,32 @@ exports.headers = headers = {
   'Content-Type': "text/html"
 };
 
-exports.serveAssets = function(res, asset, callback) {
-  // Write some code here that helps serve up your static files!
-  // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
+exports.serveAssets = serveAssets = function(req, res, assetPath) {
+
+  archive.downloadUrls(assetPath, function(data){
+    res.writeHead(200);
+    res.write(data + '');
+    res.end();
+  });
+};
+
+exports.handleURLQueries = handleURLQueries = function(req, res, assetPath){
+  console.log("handling url Query")
+  var siteName = assetPath.slice(1);
+  var newPath = archive.paths.archivedSites+assetPath
+  if(archive.isUrlInList(siteName) && isURLArchived(siteName)){
+    console.log("url is in list ")
+    serveAssets(req, res, newPath);
+  } else {
+    archive.addUrlToList(siteName)
+    serveAssets(req, res, archive.paths.siteAssets + "/loading.html");
+
+    // htmlFetcher.fetchSite(siteName, function(html) {
+    //   console.log(html);
+    //   htmlFetcher.addToSitesFolder(siteName, html);
+    // });
+    // archive.addUrlToList(siteName);
+  }
 };
 
 

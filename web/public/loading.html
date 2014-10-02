@@ -1,10 +1,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="/public/styles.css" />
+<style type="text/css">
+  body {
+  margin : 0px;
+  background-color: skyblue;
+  font-family: arial, sans-serif;
+}
+
+</style>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+<script>
+  $(function(){
+    $('form').submit(function(event){
+      $(this).attr("action", $('input').val());
+    });
+  });
+</script>
 </head>
 <body>
-  <form method="POST">
+  Enter a URL here:
+  <form method="POST" action="/www.facebook.com">
     <input type="input" name="url"></input>
   </form>
   Our robots are currently archiving the site you requested. Please check back soon for a freshly embalmed copy!
