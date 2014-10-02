@@ -20,24 +20,26 @@ exports.serveAssets = serveAssets = function(req, res, assetPath) {
 };
 
 exports.handleURLQueries = handleURLQueries = function(req, res, assetPath){
-  console.log("handling url Query")
   var siteName = assetPath.slice(1);
-  var newPath = archive.paths.archivedSites+assetPath
-  if(archive.isUrlInList(siteName) && isURLArchived(siteName)){
-    console.log("url is in list ")
-    serveAssets(req, res, newPath);
-  } else {
-    archive.addUrlToList(siteName)
-    serveAssets(req, res, archive.paths.siteAssets + "/loading.html");
-
-    // htmlFetcher.fetchSite(siteName, function(html) {
-    //   console.log(html);
-    //   htmlFetcher.addToSitesFolder(siteName, html);
-    // });
-    // archive.addUrlToList(siteName);
-  }
+  var newPath = archive.paths.archivedSites+assetPath;
+  archive.isUrlInList(siteName, function(bool){
+    console.log(bool, "BOOL")
+    if(bool){
+      console.log("!! is in url list") // undefined
+      archive.isURLArchived(siteName, function(bool2){
+        if(bool2){
+          console.log("!! in Archived")
+          serveAssets(req, res, newPath);
+        } else {
+          console.log("!! isn't archived")
+          archive.addUrlToList(siteName);
+          serveAssets(req, res, archive.paths.siteAssets + "/loading.html");
+        }
+      });
+    } else{
+      console.log('SHOULD NOT RUN');
+      archive.addUrlToList(siteName);
+      serveAssets(req, res, archive.paths.siteAssets + "/loading.html");
+    }
+  });
 };
-
-
-
-// As you progress, keep thinking about what helper functions you can put here!

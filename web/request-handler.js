@@ -2,7 +2,6 @@ var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var url = require('url');
 var helpers = require('./http-helpers.js');
-// require more modules/folders here!
 
 var routes = {
   '/': function(req, res){
@@ -16,7 +15,6 @@ var routes = {
 var methods = {
   'GET': function(req, res){
     var assetPath = url.parse(req.url).pathname;
-    // htmlFetcher.fetchSite('www.yahoo.com')
 
     if (routes[assetPath]) {
       routes[assetPath](req, res);
